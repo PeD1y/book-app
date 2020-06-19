@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for book in book_list %}
+    <form data-deleteurl="">
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-action list-group-item-secondary " data-toggle="modal" data-target="#target">
+                <div class="d-flex w-100 justify-content-between">
+                        <h3 class="mb-1">{{ book.book_title }}</h3>
+                        <small class="text-muted">カテゴリ: {{ book.category }}</small>
+                </div>
+                    <small class="mb-1">出版日:{{ book.publishedDate }}</small>
+                    <p class="mb-1"><h5>{{ book.description }}</h5></p>
+                <div class="d-flex w-100 justify-content-between">
+                            <small class="text-muted">投稿日:{{ book.created_at }}</small>
+                            <h3><span class="badge badge-primary">借出可能</span></h3>
+                </div>
+            </li>
+        </ul>
+        </form>
+        {% endfor %}
+        
+        <div class="modal" id="target" tabindex="1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">確認</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>申請してもよろしいですか？</p>
+                    </div>
+                    <form action="" method="POST" class="modal-footer">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                        <button type="submit" class="btn btn-primary">申請する</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+{% endblock %}
