@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="" method="POST">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-center">会員登録</h2>
+                {% for field in form %}
+                    <p>
+                        {{ field.label_tag }}<br>
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                    </p>
+                {% endfor %}
+                {% csrf_token %}
+                <div>
+                <a class="btn btn-secondary" href="{% url 'main:login' %}" role="button">戻る</a>                    
+                <button type="submit" class="btn btn-success">登録</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

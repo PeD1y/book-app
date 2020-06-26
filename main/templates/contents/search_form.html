@@ -1,0 +1,8 @@
+<form action="{% url 'main:book_list' %}" method="GET" class="form-inline my-2 my-md-0">
+    <div class="field">
+        <div class="control">
+            {{ form.key_word }}
+        </div>
+    </div>
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">検索</button>
+</form>

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for book in user.book_set.all %}
+        {% if messages %}
+            <ul class="alert alert-success" role="alert">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    <form data-deleteurl="">
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-secondary " data-toggle="modal" data-target="#target">
+                <div class="d-flex w-100 justify-content-between">
+                        <h3 class="mb-1">{{ book.book_title }}</h3>
+                        <small class="text-muted">カテゴリ: {{ book.category }}</small>
+                </div>
+                    <small class="mb-1">出版日:{{ book.publishedDate }}</small>
+                    <p class="mb-1"><h5>{{ book.description }}</h5></p>
+                <div class="d-flex w-100 justify-content-between">
+                    <small class="text-muted">投稿日:{{ book.created_at }}</small>
+                    {% if not book.lend %}
+                    <div>
+                        <small class="text-muted">希望者:{{ book.user_name }}</small><br>
+                        <small class="text-muted">連絡先:{{ book.user_email }}</small>
+                    </div>
+                        {% endif %}
+                    {% if book.lend %}
+                        <h3><span class="badge badge-primary">受付中</span></h3>
+                        {% else %}
+                        <div>
+                            <h3><span class="badge badge-primary">希望者あり</span></h3>
+                            <a href="{% url 'main:book_delete' book.pk %}" class="badge badge-danger">削除する</a>
+                            </span></h3>
+                            {% endif %}
+            </li>
+        </ul>
+        </form>
+    {% endfor %}
+{% endblock %}

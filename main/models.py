@@ -1,17 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.contrib.auth.validators import UnicodeUsernameValidator
+
+#import
+import uuid 
 from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
 from django.core.mail import send_mail
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
-import uuid
-'''
-class LendNotification(models.Model):
-    lend_user = models.CharField(max_length=255) #貸出希望user
-    borrow_user = models.CharField(max_length=255) #借出希望user
-    borrow_book = models.CharField(max_length=255) #貸出希望書籍
-'''
+from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -62,11 +59,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             'unique': _("A user with that username already exists."),
         },
     )
-    first_name = models.CharField(_('first name'), max_length=30, blank=True)
-    last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    email = models.EmailField(_('email address'), blank=True)
-    belongs = models.CharField(_('belongs class'),max_length=10,blank=True)
-    #Notification= models.ForeignKey(LendNotification,on_delete=models.CASCADE)
+    first_name = models.CharField(_('first name'), max_length=30, blank=False)
+    last_name = models.CharField(_('last name'), max_length=150, blank=False)
+    email = models.EmailField(_('email address'), blank=False)
+    borrow = models.BooleanField(default=True)
 
     is_staff = models.BooleanField(
         _('staff status'),
@@ -119,30 +115,29 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-
 #class BorrowNotification(models.Model):
 
 class Book(models.Model):
     # 識別ID
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) 
+    #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) 
     
     # User情報
-    #borrow_user = models.ForeignKey(User,on_delete=models.PROTECT,related_name='borrow_user',null=True) #借出user
     lend_user = models.ForeignKey(User,on_delete=models.CASCADE) #貸出user 
+    #borrow_user = models.OneToOneField(Borrow,on_delete=models.PROTECT,related_name='borrow_user',null=True,blank=True) #借出user
     #削除したアカウントの復元機能を実装する場合は、models.PROTECTがいいと思う   
     
     #書籍情報
     book_title = models.CharField(max_length=255) #題名
-    isbn_code = models.CharField(max_length=255) #isbn
     category = models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='カテゴリ',blank=False)  #カテゴリ
     author_name = models.CharField(max_length=255,blank=True) #著者
-    description = models.CharField(max_length=255,blank=True) #フレーズ
-    publishedDate = models.DateField(max_length=12,blank=True) #出版日
+    description = models.TextField(max_length=255,blank=True) #フレーズ
     created_at = models.DateTimeField('更新日',auto_now_add=True) #作成日
+    #publishedDate = models.DateTimeField(max_length=12,blank=True) #出版日
     
     #貸出情報
     lend = models.BooleanField(default=True) #貸出判定
-    #offer = models.BooleanField(default=True)
+    user_name = models.CharField(max_length=255,blank=True) #借出希望user
+    user_email= models.CharField(max_length=255,blank=True) #userメール
     
     def __str__(self):
         return self.book_title

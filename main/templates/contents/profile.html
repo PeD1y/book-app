@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="" method="POST">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-center">登録情報</h2>
+                    <p>
+                        <label>ユーザー名:</label>
+                        <font>{{ user.username }}</font><br>
+                        <label>苗字:</label>
+                        <font>{{ user.first_name }}</font><br>
+                        <label>名前:</label>
+                        <font>{{ user.last_name }}</font><br>
+                        <label>メールアドレス:</label>
+                        <font>{{ user.email }}</font><br>
+                    </p>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
