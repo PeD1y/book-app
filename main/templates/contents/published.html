@@ -28,12 +28,16 @@
                     </div>
                         {% endif %}
                     {% if book.lend %}
+                    <div>    
                         <h3><span class="badge badge-primary">受付中</span></h3>
-                        {% else %}
-                        <div>
-                            <h3><span class="badge badge-primary">希望者あり</span></h3>
-                            <a href="{% url 'main:book_delete' book.pk %}" class="badge badge-danger">削除する</a>
-                            </span></h3>
+                        <a href="{% url 'main:book_delete' book.pk %}" class="badge badge-danger">削除する</a>
+                    </div>
+                    {% else %}
+                    <div>
+                        <h3><span class="badge badge-primary">希望者あり</span></h3>
+                        <a href="{% url 'main:book_delete' book.pk %}" class="badge badge-danger">削除する</a>
+                        <a href="{% url 'main:book_again' book.pk %}" class="badge badge-danger">再掲載する</a>
+                    </div>
                             {% endif %}
             </li>
         </ul>

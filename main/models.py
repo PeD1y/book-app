@@ -111,12 +111,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Category(models.Model):
     name = models.CharField('カテゴリ名',max_length=255, unique=True)
-
     def __str__(self):
         return self.name
-
-#class BorrowNotification(models.Model):
-
 class Book(models.Model):
     # 識別ID
     #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) 

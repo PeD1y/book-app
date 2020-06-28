@@ -1,16 +1,7 @@
 from django import forms
 from .models import User,Book,Category
-from django.contrib.auth.forms import UserCreationForm
-from django.forms import ModelForm
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 
-
-class LoginForm(forms.Form):
-    model = User
-    username = forms.CharField()
-    password = forms.CharField()
-from django.contrib.auth.forms import (
-    AuthenticationForm
-)
 class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -64,12 +55,10 @@ class PreviewForm(forms.ModelForm):
         required = True,
         help_text = 'カテゴリを選択してください',
         queryset = Category.objects.all())
-
     author_name = forms.CharField(
             max_length=30,
             label='著者',            
         )
-
     description = forms.CharField(
         max_length=255,
         label = '説明',
@@ -86,7 +75,6 @@ class PreviewForm(forms.ModelForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['name'] ="keyword"
-
 
 class PostSearchForm(forms.Form):
     key_word = forms.CharField(
